@@ -558,6 +558,9 @@ paths:
                   payment_order_id:
                     type: string
                     example: MM1540456472575
+                  payment_url:
+                    type: string
+                    example: http://payment_url
                 required:
                   - status
                   - order_id
@@ -633,7 +636,7 @@ paths:
                 error_202_example:
                   $ref: "#/components/examples/error_202_example"
   /api/orders/payments/{payment_order_id}/capture:
-    post:
+    put:
       tags:
         - payment
       operationId: capture_payment_status
