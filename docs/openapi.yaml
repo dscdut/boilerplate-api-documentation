@@ -504,40 +504,23 @@ paths:
                 customer_phone:
                   type: string
                   example: "0355522219"
-                amount:
+                payment_method_id:
+                  type: integer
+                  example: 1
+                  description: id 1 is MoMo, id 2 is VnPay
+                price:
                   type: double
                   example: 200000
-                  description: Total amount
                 currency:
                   type: string
                   example: "VND"
                   description: Currency type (VND, USD)
-                items:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        example: 1
-                        description: Product id
-                      price:
-                        type: double
-                        example: 100000
-                        description: Price of a product
-                      quantity:
-                        type: integer
-                        example: 2
-                        description: Quantity of products
               required:
                 - customer_name
                 - customer_phone
-                - amount
-                - currency
-                - items
-                - id
                 - price
-                - quantity
+                - currency
+                - payment_method_id
       responses:
         "200":
           description: Payment URL created successfully
@@ -552,6 +535,9 @@ paths:
                   order_id:
                     type: string
                     example: 1
+                  total:
+                    type: double
+                    example: 500000
                   payment_method_name:
                     type: string
                     example: MoMo
@@ -566,6 +552,8 @@ paths:
                   - order_id
                   - payment_method_name
                   - payment_order_id
+                  - total
+                  - payment_url
         "400":
           description: "Return this response if one of the following error occurs: 104"
           content:
@@ -577,14 +565,11 @@ paths:
                     message: Invalid syntax
                     details:
                       [
-                        "Missing required amount field",
                         "Missing required customer_name field",
                         "Missing required customer_phone field",
-                        "Missing required id field",
                         "Missing required currency field",
                         "Missing required price field",
-                        "Missing required quantity field",
-                        "Missing required items field",
+                        "Missing required payment_method_id field",
                       ]
         "401":
           description: "Return this response if one of the following error occurs: 116"
@@ -658,18 +643,6 @@ paths:
                   status:
                     type: string
                     example: success
-                  payment_method_name:
-                    type: string
-                    example: MoMo
-                  order_id:
-                    type: integer
-                    example: 1
-                  payment_order_id:
-                    type: string
-                    example: MM1540456472575
-                  payment_status:
-                    type: string
-                    example: paid # or unpaid, pending
         "400":
           description: "Return this response if one of the following error occurs: 104"
           content:
