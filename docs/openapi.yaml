@@ -620,13 +620,13 @@ paths:
               examples:
                 error_202_example:
                   $ref: "#/components/examples/error_202_example"
-  /api/orders/payments/{payment_order_id}/capture:
+  /api/orders/payments/{order_id}/capture:
     put:
       tags:
         - payment
       operationId: capture_payment_status
       parameters:
-        - name: payment_order_id
+        - name: order_id
           in: path
           required: true
           schema:
@@ -652,9 +652,16 @@ paths:
                   value:
                     error_code: 104
                     message: Invalid syntax
-                    details: ["Missing required payment_order_id field"]
+                    details: ["Missing required order_id field"]
+        "401":
+          description: "Return this response if one of the following error occurs: 116"
+          content:
+            application/json:
+              examples:
+                error_116_example:
+                  $ref: "#/components/examples/error_116_example"
         "404":
-          description: Order not found
+          description: "Return this response if one of the following error occurs: 211"
           content:
             application/json:
               examples:
@@ -785,4 +792,4 @@ components:
     error_211_example:
       value:
         error_code: 211
-        message: Payment order ID not found
+        message: The order Id does not exits
