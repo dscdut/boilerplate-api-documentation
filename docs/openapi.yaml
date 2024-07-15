@@ -508,7 +508,7 @@ paths:
                   type: integer
                   example: 1
                   description: id 1 is MoMo, id 2 is VnPay
-                price:
+                amount:
                   type: double
                   example: 200000
                 currency:
@@ -518,7 +518,7 @@ paths:
               required:
                 - customer_name
                 - customer_phone
-                - price
+                - amount
                 - currency
                 - payment_method_id
       responses:
@@ -535,9 +535,6 @@ paths:
                   order_id:
                     type: string
                     example: 1
-                  total:
-                    type: double
-                    example: 500000
                   payment_method_name:
                     type: string
                     example: MoMo
@@ -552,7 +549,6 @@ paths:
                   - order_id
                   - payment_method_name
                   - payment_order_id
-                  - total
                   - payment_url
         "400":
           description: "Return this response if one of the following error occurs: 104"
@@ -568,7 +564,7 @@ paths:
                         "Missing required customer_name field",
                         "Missing required customer_phone field",
                         "Missing required currency field",
-                        "Missing required price field",
+                        "Missing required amount field",
                         "Missing required payment_method_id field",
                       ]
         "401":
@@ -631,7 +627,7 @@ paths:
           required: true
           schema:
             type: string
-          description: ID of the order to check and update
+          description: ID of the order to update
       responses:
         "200":
           description: Payment status captured and order status updated successfully
@@ -643,6 +639,70 @@ paths:
                   status:
                     type: string
                     example: success
+        "400":
+          description: "Return this response if one of the following error occurs: 104"
+          content:
+            application/json:
+              examples:
+                error_104_example:
+                  value:
+                    error_code: 104
+                    message: Invalid syntax
+                    details: ["Missing required order_id field"]
+        "401":
+          description: "Return this response if one of the following error occurs: 116"
+          content:
+            application/json:
+              examples:
+                error_116_example:
+                  $ref: "#/components/examples/error_116_example"
+        "404":
+          description: "Return this response if one of the following error occurs: 211"
+          content:
+            application/json:
+              examples:
+                error_211_example:
+                  $ref: "#/components/examples/error_211_example"
+        "500":
+          description: "Return this response if one of the following error occurs: 103, 117, 118, 119"
+          content:
+            application/json:
+              examples:
+                error_103_example:
+                  $ref: "#/components/examples/error_103_example"
+    get:
+      tags:
+        - payment
+      operationId: capture_payment_status
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the order to check
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  amount:
+                    type: double
+                    example: 500000
+                  payment_method_name:
+                    type: string
+                    example: MoMo
+                  payment_order_id:
+                    type: string
+                    example: MM17254578
+                  currency:
+                    type: string
+                    example: VND
         "400":
           description: "Return this response if one of the following error occurs: 104"
           content:
